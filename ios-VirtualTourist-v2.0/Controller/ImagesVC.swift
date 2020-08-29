@@ -81,13 +81,21 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let vc = storyboard?.instantiateViewController(identifier: "ImageDetailsVC") as! ImageDetailsVC
+        vc.image = #imageLiteral(resourceName: "placeholder")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    /*
     //MARK:- REMOVE selcted item
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         datasource.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
     }
-    
+    */
 }
 
 // MARK:- Map View

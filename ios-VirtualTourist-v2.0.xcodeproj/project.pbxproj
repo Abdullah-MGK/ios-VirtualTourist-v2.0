@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B3B9E4224FAE2BA000E6FC3 /* ImageDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3B9E4124FAE2BA000E6FC3 /* ImageDetailsVC.swift */; };
 		3B44948D24F80E0200768A00 /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44948C24F80E0200768A00 /* FlickrClient.swift */; };
 		3B44948F24F8413800768A00 /* FlickrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B44948E24F8413800768A00 /* FlickrResponse.swift */; };
 		3B51CBA424F6FCBE002E35AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B51CBA324F6FCBE002E35AF /* AppDelegate.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B3B9E4124FAE2BA000E6FC3 /* ImageDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailsVC.swift; sourceTree = "<group>"; };
 		3B44948C24F80E0200768A00 /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		3B44948E24F8413800768A00 /* FlickrResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrResponse.swift; sourceTree = "<group>"; };
 		3B51CBA024F6FCBE002E35AF /* ios-VirtualTourist-v2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-VirtualTourist-v2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +121,7 @@
 			children = (
 				3BE5138C24F6FF6D003A04D7 /* MapVC.swift */,
 				3BE5138E24F6FF91003A04D7 /* ImagesVC.swift */,
+				3B3B9E4124FAE2BA000E6FC3 /* ImageDetailsVC.swift */,
 				3BE5139024F70352003A04D7 /* ImageCell.swift */,
 			);
 			path = Controller;
@@ -257,6 +260,7 @@
 				3BE5139124F70352003A04D7 /* ImageCell.swift in Sources */,
 				3BCE057D24F74B7400CC88B6 /* Model.xcdatamodeld in Sources */,
 				3B44948D24F80E0200768A00 /* FlickrClient.swift in Sources */,
+				3B3B9E4224FAE2BA000E6FC3 /* ImageDetailsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,7 @@
         <!--MapVC-->
         <scene sceneID="QJz-8A-Dja">
             <objects>
-                <viewController storyboardIdentifier="MapVC" id="wJJ-1D-z4P" customClass="MapVC" customModule="ios_VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapVC" id="wJJ-1D-z4P" customClass="MapVC" customModule="ios_VirtualTourist_v2_0" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="56N-WK-HL7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,7 +41,7 @@
         <!--ImagesVC-->
         <scene sceneID="tT0-gk-GBz">
             <objects>
-                <viewController storyboardIdentifier="ImagesVC" id="nxL-Hc-6cS" customClass="ImagesVC" customModule="ios_VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImagesVC" id="nxL-Hc-6cS" customClass="ImagesVC" customModule="ios_VirtualTourist_v2_0" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DG4-yW-98m">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -59,7 +59,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="WBb-DI-vzA" customClass="ImageCell" customModule="ios_VirtualTourist" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="WBb-DI-vzA" customClass="ImageCell" customModule="ios_VirtualTourist_v2_0" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="04j-kp-EnM">
@@ -106,6 +106,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AC6-VE-kSz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2000.0000000000002" y="141.96428571428569"/>
+        </scene>
+        <!--Image DetailsVC-->
+        <scene sceneID="yl0-kZ-pd4">
+            <objects>
+                <viewController storyboardIdentifier="ImageDetailsVC" id="GbN-eD-eaT" customClass="ImageDetailsVC" customModule="ios_VirtualTourist_v2_0" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RX6-wX-vC5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pZR-tV-MCu">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Hp5-CU-BSf" firstAttribute="bottom" secondItem="pZR-tV-MCu" secondAttribute="bottom" id="0cP-Vb-pph"/>
+                            <constraint firstItem="pZR-tV-MCu" firstAttribute="width" secondItem="RX6-wX-vC5" secondAttribute="width" id="CGv-FJ-apo"/>
+                            <constraint firstItem="pZR-tV-MCu" firstAttribute="centerX" secondItem="RX6-wX-vC5" secondAttribute="centerX" id="Jl9-Pt-Ky9"/>
+                            <constraint firstItem="pZR-tV-MCu" firstAttribute="top" secondItem="Hp5-CU-BSf" secondAttribute="top" id="Xjs-ft-9ak"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Hp5-CU-BSf"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="m5Q-Fq-exT"/>
+                    <connections>
+                        <outlet property="imageView" destination="pZR-tV-MCu" id="12E-SG-zHH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AVZ-jW-XQR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2907" y="142"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kxe-CR-Ujq">
