@@ -16,19 +16,20 @@ class ImageDetailsVC: UIViewController {
     var imageURL: NSURL!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         setupNavbar()
         setupImage()
     }
     
     func setupNavbar() {
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareImage))
+        enableShareBTN(isEnabled: false)
     }
     
     func setupImage() {
-        //imageView.isUserInteractionEnabled = true
-        //imageView.kf.setImage(with: imageURL.absoluteURL!)
-        
+         
         print(imageURL.absoluteURL!)
         
         if placeholder == nil {
@@ -36,11 +37,28 @@ class ImageDetailsVC: UIViewController {
         }
         
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: imageURL.absoluteURL!, placeholder: placeholder, options: [.transition(.fade(0.2))])
+        imageView.kf.setImage(with: imageURL.absoluteURL!, placeholder: placeholder, options: [.transition(.fade(0.2))]) { _ in
+            self.enableShareBTN(isEnabled: true)
+        }
     }
     
     @objc func shareImage() {
-
+        
+        let image = imageView.image!
+        
+        let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func enableShareBTN(isEnabled: Bool?) {
+        
+        if let isEnabled = isEnabled {
+            navigationItem.rightBarButtonItem?.isEnabled = isEnabled
+        }
+        else {
+            navigationItem.rightBarButtonItem?.isEnabled = !(navigationItem.rightBarButtonItem!.isEnabled)
+        }
     }
     
 }
