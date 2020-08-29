@@ -73,9 +73,9 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
         
-        cell.imageView.image = #imageLiteral(resourceName: "placeholder")
-        cell.imageView.kf.indicatorType = .activity
         let url = datasource[indexPath.row].absoluteURL
+        
+        cell.imageView.kf.indicatorType = .activity
         cell.imageView.kf.setImage(with: url, options: [.transition(.fade(0.3))])
         
         return cell
@@ -84,7 +84,9 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let vc = storyboard?.instantiateViewController(identifier: "ImageDetailsVC") as! ImageDetailsVC
-        vc.image = #imageLiteral(resourceName: "placeholder")
+        let url = FlickrClient.getLargeImageURL(url: datasource[indexPath.row])
+        vc.imageURL = url
+        vc.placeholder = (collectionView.cellForItem(at: indexPath) as! ImageCell).imageView.image
         navigationController?.pushViewController(vc, animated: true)
     }
     

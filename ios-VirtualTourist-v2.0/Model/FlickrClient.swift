@@ -85,4 +85,14 @@ class FlickrClient {
         return urls
     }
     
+    static func getLargeImageURL(url: NSURL) -> NSURL {
+        let oldPathComponent = url.lastPathComponent!
+        let start = oldPathComponent.index(oldPathComponent.endIndex, offsetBy: -5)
+        let end = oldPathComponent.endIndex
+        let newPathComponent = oldPathComponent.replacingCharacters(in: start..<end, with: "b.jpg")
+        let newURL = (url.deletingLastPathComponent)?.appendingPathComponent(newPathComponent)
+        
+        return NSURL(string: newURL!.absoluteString)!
+    }
+    
 }

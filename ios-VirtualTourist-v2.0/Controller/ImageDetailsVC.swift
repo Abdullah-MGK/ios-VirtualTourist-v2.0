@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ImageDetailsVC: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
-    var image: UIImage!
+    var placeholder: UIImage?
+    var imageURL: NSURL!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +26,21 @@ class ImageDetailsVC: UIViewController {
     }
     
     func setupImage() {
-        imageView.image = image
+        //imageView.isUserInteractionEnabled = true
+        //imageView.kf.setImage(with: imageURL.absoluteURL!)
+        
+        print(imageURL.absoluteURL!)
+        
+        if placeholder == nil {
+            placeholder = #imageLiteral(resourceName: "placeholder")
+        }
+        
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: imageURL.absoluteURL!, placeholder: placeholder, options: [.transition(.fade(0.2))])
     }
     
     @objc func shareImage() {
-        
+
     }
     
 }
