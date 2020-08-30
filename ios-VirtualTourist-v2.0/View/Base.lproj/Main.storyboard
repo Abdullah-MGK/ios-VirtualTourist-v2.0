@@ -115,22 +115,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pZR-tV-MCu">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9g-ve-OkX">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pZR-tV-MCu">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="pZR-tV-MCu" firstAttribute="top" secondItem="y9g-ve-OkX" secondAttribute="top" id="0O4-Em-4Gi"/>
+                                    <constraint firstItem="pZR-tV-MCu" firstAttribute="centerY" secondItem="y9g-ve-OkX" secondAttribute="centerY" id="8BB-Wd-JUg"/>
+                                    <constraint firstAttribute="trailing" secondItem="pZR-tV-MCu" secondAttribute="trailing" id="Hof-SL-BcI"/>
+                                    <constraint firstItem="pZR-tV-MCu" firstAttribute="centerX" secondItem="y9g-ve-OkX" secondAttribute="centerX" id="av1-7n-leU"/>
+                                    <constraint firstAttribute="bottom" secondItem="pZR-tV-MCu" secondAttribute="bottom" id="dbi-MM-VGn"/>
+                                    <constraint firstItem="pZR-tV-MCu" firstAttribute="leading" secondItem="y9g-ve-OkX" secondAttribute="leading" id="s26-lt-Sa7"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="uHe-ss-hIf"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="OC9-vK-QmT"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Hp5-CU-BSf" firstAttribute="bottom" secondItem="pZR-tV-MCu" secondAttribute="bottom" id="0cP-Vb-pph"/>
-                            <constraint firstItem="pZR-tV-MCu" firstAttribute="width" secondItem="RX6-wX-vC5" secondAttribute="width" id="CGv-FJ-apo"/>
-                            <constraint firstItem="pZR-tV-MCu" firstAttribute="centerX" secondItem="RX6-wX-vC5" secondAttribute="centerX" id="Jl9-Pt-Ky9"/>
-                            <constraint firstItem="pZR-tV-MCu" firstAttribute="top" secondItem="Hp5-CU-BSf" secondAttribute="top" id="Xjs-ft-9ak"/>
+                            <constraint firstItem="y9g-ve-OkX" firstAttribute="bottom" secondItem="Hp5-CU-BSf" secondAttribute="bottom" id="Ihw-1F-8xl"/>
+                            <constraint firstItem="Hp5-CU-BSf" firstAttribute="top" secondItem="y9g-ve-OkX" secondAttribute="top" id="N3l-z0-NpN"/>
+                            <constraint firstItem="y9g-ve-OkX" firstAttribute="trailing" secondItem="Hp5-CU-BSf" secondAttribute="trailing" id="aVb-tj-8vR"/>
+                            <constraint firstItem="Hp5-CU-BSf" firstAttribute="leading" secondItem="y9g-ve-OkX" secondAttribute="leading" id="odb-ue-CfV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Hp5-CU-BSf"/>
                     </view>
                     <navigationItem key="navigationItem" id="m5Q-Fq-exT"/>
                     <connections>
                         <outlet property="imageView" destination="pZR-tV-MCu" id="12E-SG-zHH"/>
+                        <outlet property="scrollView" destination="y9g-ve-OkX" id="VTA-jj-axC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AVZ-jW-XQR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

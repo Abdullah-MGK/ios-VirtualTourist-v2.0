@@ -12,6 +12,8 @@ import Kingfisher
 class ImageDetailsVC: UIViewController {
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     var placeholder: UIImage?
     var imageURL: NSURL!
     
@@ -20,6 +22,8 @@ class ImageDetailsVC: UIViewController {
         super.viewDidLoad()
         setupNavbar()
         setupImage()
+        setupScrollView()
+        setupDoubleTapGesture()
     }
     
     func setupNavbar() {
@@ -29,7 +33,7 @@ class ImageDetailsVC: UIViewController {
     }
     
     func setupImage() {
-         
+        
         print(imageURL.absoluteURL!)
         
         if placeholder == nil {
@@ -58,6 +62,50 @@ class ImageDetailsVC: UIViewController {
         }
         else {
             navigationItem.rightBarButtonItem?.isEnabled = !(navigationItem.rightBarButtonItem!.isEnabled)
+        }
+    }
+    
+}
+
+
+extension ImageDetailsVC: UIScrollViewDelegate {
+    
+    func setupScrollView() {
+        
+        scrollView.delegate = self
+        scrollView.maximumZoomScale = 3
+        scrollView.minimumZoomScale = 1
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.bouncesZoom = true
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
+    }
+    
+}
+
+extension ImageDetailsVC: UIGestureRecognizerDelegate {
+    
+    func setupDoubleTapGesture() {
+        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapGesture(sender:)))
+        doubleTapGesture.delegate = self
+        doubleTapGesture.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapGesture)
+    }
+    
+    @objc func handleDoubleTapGesture(sender: UITapGestureRecognizer) {
+        
+        if scrollView.zoomScale == 1 {
+            scrollView.setZoomScale(2, animated: true)
+        }
+        else if scrollView.zoomScale == 2 {
+            scrollView.setZoomScale(3, animated: true)
+        }
+        else {
+            scrollView.setZoomScale(1, animated: true)
         }
     }
     
