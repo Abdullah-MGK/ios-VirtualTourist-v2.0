@@ -54,7 +54,7 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         if page < pin.maxPages { page += 1 }
         else { page = 1 }
         
-        FlickrClient.requestImages(latitude: pin.latitude, longitude: pin.longitude, page: page) { (urls, maxPages) in
+        FlickrClient.requestImages(page: page, latitude: pin.latitude, longitude: pin.longitude, search: "") { (urls, maxPages) in
             
             self.pin.imagesURLS = urls
             self.datasource = urls
@@ -90,14 +90,6 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    /*
-    //MARK:- REMOVE selcted item
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        datasource.remove(at: indexPath.row)
-        collectionView.deleteItems(at: [indexPath])
-    }
-    */
 }
 
 // MARK:- Map View

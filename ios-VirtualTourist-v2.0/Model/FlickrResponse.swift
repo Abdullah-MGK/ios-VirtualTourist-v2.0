@@ -9,7 +9,8 @@
 import Foundation
 
 // request
-// https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=914f9abe1b3e5c5f260ebd9f1ca43f5d&lat=2.0&long=2.0&accuracy=11&media=photos
+// https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=914f9abe1b3e5c5f260ebd9f1ca43f5d&secret=0224f9032da44b62&format=json&nojsoncallback=1&media=photos&page=1&per_page=20&lat=2.0&long=2.0&accuracy=11
+// https://api.flickr.com/services/rest?method=flickr.photos.search&api_key=914f9abe1b3e5c5f260ebd9f1ca43f5d&secret=0224f9032da44b62&format=json&nojsoncallback=1&media=photos&page=1&per_page=20&text=jeddah
 /*
  base URL: https://api.flickr.com/services/rest
  api_key: 914f9abe1b3e5c5f260ebd9f1ca43f5d
@@ -45,30 +46,32 @@ import Foundation
 struct FlickrQueryParams: Codable {
     
     // request parameters
+    let method = "flickr.photos.search"
     let apiKey = "914f9abe1b3e5c5f260ebd9f1ca43f5d"
     let secret = "0224f9032da44b62"
-    let method = "flickr.photos.search"
     let format = "json"
-    let media = "photos"
     let noJSONCallBack = 1
-    var latitude = 1.0
-    var longitude = 1.0
+    let media = "photos"
     var page = 1
     let perPage = 20
     let accuracy = 11
+    var latitude = 1.0
+    var longitude = 1.0
+    var text = ""
     
     enum CodingKeys: String, CodingKey {
+        case method
         case apiKey = "api_key"
         case secret
-        case method
         case format
-        case media
         case noJSONCallBack = "nojsoncallback"
-        case latitude = "lat"
-        case longitude = "lon"
+        case media
         case page
         case perPage = "per_page"
         case accuracy
+        case latitude = "lat"
+        case longitude = "lon"
+        case text
     }
     
     //let query = baseURL + apiKey + secret + method + format + media + lat + lon + page + perPage + accuracy + noJSONCallBack
