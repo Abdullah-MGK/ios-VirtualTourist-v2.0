@@ -20,8 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        // Core Data Stack
-        let nc = window?.rootViewController as! UINavigationController
+        // Pass Data Controller to first view
+        let root = window?.rootViewController as! UITabBarController
+        let nc = root.viewControllers![0] as! UINavigationController
         let firstVC = nc.topViewController as! MapVC
         firstVC.dataController2 = (UIApplication.shared.delegate as! AppDelegate).dataController2
     }
