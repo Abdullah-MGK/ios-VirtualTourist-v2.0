@@ -9,15 +9,15 @@
 // MARK:- NEW FEATURES
 /*
     1- View Hi-Res Images
-        - Click on photo to view big size, interact same as photos app zoom and move between pictures
-    2- Save Images
+        - Click on photo to view big size, zoom by pinching or by double tapping
+    2- Share Images
         - Click on share icon to save it or share it
     3- Delete Pins:
         - Click Edit button so delete mode is activated, select pins to delete them, click done to confirm deleting, click cancel to cancel deletion, if no pins edit button will be disabled
     4- Add Pins
         - Long press:
             - begin: drop, changed: move, ended: save
-    6- Search
+    5- Search
         - Enter keyword to search for something
  */
 

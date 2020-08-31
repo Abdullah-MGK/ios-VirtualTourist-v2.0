@@ -15,6 +15,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var dataController2: DataController!
+    var deletingAnnotations = [CustomMKPointAnnotation]()
     
     override func viewDidLoad() {
         
@@ -29,8 +30,44 @@ class MapVC: UIViewController, MKMapViewDelegate {
         
         navigationItem.title = "Virtual Tourist"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelChanges))
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
+    @objc func cancelChanges() {
+        
+        // unnecssary if stmnt
+        if !deletingAnnotations.isEmpty {
+            mapView.addAnnotations(deletingAnnotations)
+            deletingAnnotations = []
+        }
+        setEditing(false, animated: true)
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        if !editing {
+            navigationItem.leftBarButtonItem?.isEnabled = false
+            
+            // unnecssary if stmnt
+            if !deletingAnnotations.isEmpty {
+                for annotation in deletingAnnotations {
+                    dataController2.viewContext.delete(annotation.pin)
+                }
+                deletingAnnotations = []
+                try? dataController2.viewContext.save()
+            }
+            editButtonItem.isEnabled = !mapView.annotations.isEmpty
+            print("done")
+        }
+        else {
+            editButtonItem.isEnabled = false
+            navigationItem.leftBarButtonItem?.isEnabled = true
+            print(editing)
+        }
+    }
     
     // MARK:- SAVE new annotation TO core data
     func saveAnnotation(coordinate: CLLocationCoordinate2D, completion: ((Pin) -> Void)? = nil) {
@@ -51,11 +88,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
     // MARK:- ADD loaded annotations from core data AND new annotation TO map annotations
     func addAnnotations(pins: [Pin]) {
         
-        guard !pins.isEmpty else {
-            return
-        }
-        
-        var annotations = [MKPointAnnotation]()
+        var annotations = [CustomMKPointAnnotation]()
         
         for pin in pins {
             let annotation = CustomMKPointAnnotation()
@@ -66,7 +99,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
             annotations.append(annotation)
         }
         
-        //mapView.removeAnnotations(mapView.annotations)
+        editButtonItem.isEnabled = !annotations.isEmpty
         mapView.addAnnotations(annotations)
     }
     
@@ -90,6 +123,15 @@ class MapVC: UIViewController, MKMapViewDelegate {
     // MARK:- SELECT annotation
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
+        if isEditing {
+            let annotation = view.annotation as! CustomMKPointAnnotation
+            deletingAnnotations.append(annotation)
+            mapView.removeAnnotation(annotation)
+            editButtonItem.isEnabled = true
+            //dataController2.viewContext.delete(annotation.pin)
+            return
+        }
+        
         let imagesVC = storyboard?.instantiateViewController(identifier: "ImagesVC") as! ImagesVC
         imagesVC.pin = (view.annotation as! CustomMKPointAnnotation).pin
         imagesVC.dataController2 = dataController2
@@ -98,6 +140,11 @@ class MapVC: UIViewController, MKMapViewDelegate {
     
     // MARK:- CHANGE map region
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        
+        if isEditing {
+            return
+        }
+        
         setMapDefaults()
     }
     
