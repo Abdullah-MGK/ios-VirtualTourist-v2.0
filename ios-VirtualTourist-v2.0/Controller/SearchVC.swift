@@ -9,7 +9,9 @@
 import UIKit
 import Kingfisher
 
-class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SearchVC: UIViewController {
+    
+    // MARK:- Attributes
     
     @IBOutlet weak var collectionView: UICollectionView!
     let searchController = UISearchController(searchResultsController: nil)
@@ -19,7 +21,10 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     var page = 1
     var maxPages = 1
     var searching = ""
+    
 
+    // MARK:- Methods
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -28,16 +33,16 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         setupCollectionView()
     }
     
-    // MARK:- ADD title and update images button
+    /// ADD title and update images button
     func setupNavBar() {
         
         navigationItem.title = "Search"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(reloadImages))
     }
     
+    /// ADD search bar
     func setupSearch() {
         
-        // (delegate)
         searchController.searchBar.delegate = self
         
         // transparent background
@@ -46,7 +51,6 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         // navigation bar should be hidden when searching
         searchController.hidesNavigationBarDuringPresentation = false
         
-        // placeholder
         searchController.searchBar.placeholder = "looking for something?"
         
         // takes out the search when moving between screens
@@ -59,6 +63,14 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         navigationItem.searchController = searchController
     }
     
+    /// SET collection view delegates
+    func setupCollectionView() {
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
+    /// REQUEST new images
     @objc func reloadImages() {
         
         if page < maxPages {
@@ -75,13 +87,39 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
             self.collectionView.reloadData()
         }
     }
+
+}
+
+
+// MARK:- UISearchBarDelegate
+extension SearchVC: UISearchBarDelegate {
     
-    // MARK:- ADD collection view delegates and datasource
-    func setupCollectionView() {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        searching = searchBar.text ?? ""
+        
+        FlickrClient.requestImages(page: page, search: searching) { (urls, maxPages) in
+            
+            self.maxPages = maxPages
+            self.datasource = urls
+            self.collectionView.reloadData()
+        }
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        page = 1
+        maxPages = 1
+        searching = ""
+        datasource = []
+        collectionView.reloadData()
+    }
+    
+}
+
+
+// MARK:- UICollectionViewDelegate & UICollectionViewDataSource
+extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         datasource.count
@@ -107,48 +145,21 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         vc.placeholder = (collectionView.cellForItem(at: indexPath) as! ImageCell).imageView.image
         navigationController?.pushViewController(vc, animated: true)
     }
-
-}
-
-// MARK:- UISearchBarDelegate
-extension SearchVC: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        searching = searchBar.text ?? ""
-        
-        FlickrClient.requestImages(page: page, search: searching) { (urls, maxPages) in
-            
-            self.maxPages = maxPages
-            self.datasource = urls
-            self.collectionView.reloadData()
-        }
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        page = 1
-        maxPages = 1
-        searching = ""
-        datasource = []
-        collectionView.reloadData()
-    }
     
 }
+
 
 // MARK:- UICollectionViewDelegateFlowLayout
 extension SearchVC: UICollectionViewDelegateFlowLayout {
     
-    // MARK:- SET spacing between collection items
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         spacing
     }
     
-    // MARK:- SET spacing between collection items
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         spacing
     }
     
-    // MARK:- SET item size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         // gets the safeArea size
@@ -162,4 +173,3 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
     }
     
 }
-

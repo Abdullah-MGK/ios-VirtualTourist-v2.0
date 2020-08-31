@@ -9,9 +9,14 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
+    // MARK:- Attributes
+    
     var window: UIWindow?
-
+    
+    
+    // MARK:- Methods
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -24,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let root = window?.rootViewController as! UITabBarController
         let nc = root.viewControllers![0] as! UINavigationController
         let firstVC = nc.topViewController as! MapVC
-        firstVC.dataController2 = (UIApplication.shared.delegate as! AppDelegate).dataController2
+        firstVC.dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

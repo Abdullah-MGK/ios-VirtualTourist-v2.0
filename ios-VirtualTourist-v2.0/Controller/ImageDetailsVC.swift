@@ -10,12 +10,17 @@ import UIKit
 import Kingfisher
 
 class ImageDetailsVC: UIViewController {
-
+    
+    // MARK:- Attributes
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     var placeholder: UIImage?
     var imageURL: NSURL!
+    
+    
+    // MARK:- Methods
     
     override func viewDidLoad() {
         
@@ -26,12 +31,14 @@ class ImageDetailsVC: UIViewController {
         setupDoubleTapGesture()
     }
     
+    /// ADD title and share image button
     func setupNavbar() {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareImage))
         enableShareBTN(isEnabled: false)
     }
     
+    /// GET Image from Flickr
     func setupImage() {
         
         print(imageURL.absoluteURL!)
@@ -46,6 +53,7 @@ class ImageDetailsVC: UIViewController {
         }
     }
     
+    /// SET UIActivityViewController
     @objc func shareImage() {
         
         let image = imageView.image!
@@ -55,8 +63,9 @@ class ImageDetailsVC: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    /// TOGGLE share button
     func enableShareBTN(isEnabled: Bool?) {
-        
+
         if let isEnabled = isEnabled {
             navigationItem.rightBarButtonItem?.isEnabled = isEnabled
         }
@@ -68,8 +77,10 @@ class ImageDetailsVC: UIViewController {
 }
 
 
+// MARK:- UIScrollViewDelegate
 extension ImageDetailsVC: UIScrollViewDelegate {
     
+    /// SET scroll view properties
     func setupScrollView() {
         
         scrollView.delegate = self
@@ -86,8 +97,11 @@ extension ImageDetailsVC: UIScrollViewDelegate {
     
 }
 
+
+// MARK:- UIGestureRecognizerDelegate
 extension ImageDetailsVC: UIGestureRecognizerDelegate {
     
+    /// ADD double tap gesture recognizer
     func setupDoubleTapGesture() {
         
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapGesture(sender:)))
@@ -96,6 +110,7 @@ extension ImageDetailsVC: UIGestureRecognizerDelegate {
         scrollView.addGestureRecognizer(doubleTapGesture)
     }
     
+    /// SET zoom scale
     @objc func handleDoubleTapGesture(sender: UITapGestureRecognizer) {
         
         if scrollView.zoomScale == 1 {

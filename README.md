@@ -3,6 +3,7 @@
 ## Project Description
 
 Virtual Tourist is an app that allows the users to search and view images for certain location by dropping a pin on the map or using the search feature. It uses Flickr API to get images.
+
 _This project was part of Udacity iOS Developer Nanodegree._
 
 ## Quickstart
@@ -17,6 +18,7 @@ _This project was part of Udacity iOS Developer Nanodegree._
 1. Clone or download the repository.
 2. Navigate the proejct directory and run the command `pod install`.
     * CocoaPods are required to build the project, if you don't have it, please follow the guide [here](https://cocoapods.org/).
+    * Used Pods: **Kingfisher** for downloading images, **Alamofire** for managing network requests.
 3. Open `ios-VirtualTourist-v2.0.xcworkspace` and run the app.
 
 ## User Manual

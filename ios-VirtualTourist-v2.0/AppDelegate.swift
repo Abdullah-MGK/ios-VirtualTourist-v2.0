@@ -6,33 +6,27 @@
 //  Copyright © 2020 Abdullah Khayat. All rights reserved.
 //
 
-// MARK:- NEW FEATURES
-/*
-    1- View Hi-Res Images
-        - Click on photo to view big size, zoom by pinching or by double tapping
-    2- Share Images
-        - Click on share icon to save it or share it
-    3- Delete Pins:
-        - Click Edit button so delete mode is activated, select pins to delete them, click done to confirm deleting, click cancel to cancel deletion, if no pins edit button will be disabled
-    4- Search
-        - Enter keyword to search for something
- */
-
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let dataController2 = DataController(modelName: "Model")
+    // MARK:- Attributes
+    
+    let dataController = DataController(modelName: "Model")
+    
+    
+    // MARK:- Methods
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        dataController2.load()
+        dataController.load()
         checkIfFirstLaunch()
         
         return true
     }
     
+    /// SET user default properties on first launch
     func checkIfFirstLaunch() {
         
         if UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
@@ -72,8 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         save()
     }
     
+    /// SAVE changes to data controller
     func save() {
-        try? dataController2.viewContext.save()
+        try? dataController.viewContext.save()
     }
 
 }

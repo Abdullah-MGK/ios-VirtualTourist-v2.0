@@ -10,12 +10,17 @@ import UIKit
 import MapKit
 import CoreData
 
-class MapVC: UIViewController, MKMapViewDelegate {
+class MapVC: UIViewController {
+    
+    // MARK:- Variables
     
     @IBOutlet weak var mapView: MKMapView!
     
-    var dataController2: DataController!
+    var dataController: DataController!
     var deletingAnnotations = [CustomMKPointAnnotation]()
+    
+    
+    // MARK:- Methods
     
     override func viewDidLoad() {
         
@@ -25,7 +30,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         setupLongPressGesture()
     }
     
-    // MARK:- ADD title and back button TO navigation bar
+    /// ADD title and back button TO navigation bar
     func setupNavBar() {
         
         navigationItem.title = "Virtual Tourist"
@@ -35,6 +40,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
+    /// ADD deleted pins
     @objc func cancelChanges() {
         
         // unnecssary if stmnt
@@ -54,10 +60,10 @@ class MapVC: UIViewController, MKMapViewDelegate {
             // unnecssary if stmnt
             if !deletingAnnotations.isEmpty {
                 for annotation in deletingAnnotations {
-                    dataController2.viewContext.delete(annotation.pin)
+                    dataController.viewContext.delete(annotation.pin)
                 }
                 deletingAnnotations = []
-                try? dataController2.viewContext.save()
+                try? dataController.viewContext.save()
             }
             editButtonItem.isEnabled = !mapView.annotations.isEmpty
             print("done")
@@ -69,41 +75,12 @@ class MapVC: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // MARK:- SAVE new annotation TO core data
-    func saveAnnotation(coordinate: CLLocationCoordinate2D, completion: ((Pin) -> Void)? = nil) {
-        
-        let pin = Pin(context: dataController2.viewContext)
-        pin.latitude = coordinate.latitude
-        pin.longitude = coordinate.longitude
-        
-        FlickrClient.requestImages(latitude: pin.latitude, longitude: pin.longitude) { (urls, maxPages) in
-            
-            pin.imagesURLS = urls
-            pin.maxPages = Int16(maxPages)
-            completion?(pin)
-            try? self.dataController2.viewContext.save()
-        }
-    }
+}
+
+
+// MARK:- MKMapViewDelegate
+extension MapVC: MKMapViewDelegate {
     
-    // MARK:- ADD loaded annotations from core data AND new annotation TO map annotations
-    func addAnnotations(pins: [Pin]) {
-        
-        var annotations = [CustomMKPointAnnotation]()
-        
-        for pin in pins {
-            let annotation = CustomMKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-            annotation.title = "title"
-            annotation.subtitle = "subtitle"
-            annotation.pin = pin
-            annotations.append(annotation)
-        }
-        
-        editButtonItem.isEnabled = !annotations.isEmpty
-        mapView.addAnnotations(annotations)
-    }
-    
-    // MARK:- SET annotation view
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let pinId = "pin"
@@ -120,7 +97,6 @@ class MapVC: UIViewController, MKMapViewDelegate {
         return pinView
     }
     
-    // MARK:- SELECT annotation
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         if isEditing {
@@ -128,17 +104,16 @@ class MapVC: UIViewController, MKMapViewDelegate {
             deletingAnnotations.append(annotation)
             mapView.removeAnnotation(annotation)
             editButtonItem.isEnabled = true
-            //dataController2.viewContext.delete(annotation.pin)
+            //dataController.viewContext.delete(annotation.pin)
             return
         }
         
         let imagesVC = storyboard?.instantiateViewController(identifier: "ImagesVC") as! ImagesVC
         imagesVC.pin = (view.annotation as! CustomMKPointAnnotation).pin
-        imagesVC.dataController2 = dataController2
+        imagesVC.dataController = dataController
         navigationController?.pushViewController(imagesVC, animated: true)
     }
     
-    // MARK:- CHANGE map region
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
         if isEditing {
@@ -148,26 +123,13 @@ class MapVC: UIViewController, MKMapViewDelegate {
         setMapDefaults()
     }
     
-    // MARK:- SET new map defaults
-    func setMapDefaults() {
-        let latitude = mapView.centerCoordinate.latitude
-        let longitude = mapView.centerCoordinate.longitude
-        let latitudeDelta =  mapView.region.span.latitudeDelta
-        let longitudeDelta = mapView.region.span.longitudeDelta
-        
-        UserDefaults.standard.set(latitude, forKey: "x")
-        UserDefaults.standard.set(longitude, forKey: "y")
-        UserDefaults.standard.set(latitudeDelta, forKey: "z")
-        UserDefaults.standard.set(longitudeDelta, forKey: "w")
-    }
-    
 }
 
 
 // MARK: Setup Map
 extension MapVC {
     
-    // MARK:- LOAD map defaults AND annotations
+    /// LOAD map defaults AND annotations
     func setupMap() {
         
         mapView.delegate = self
@@ -176,7 +138,7 @@ extension MapVC {
         addAnnotations(pins: pins)
     }
     
-    // MARK:- GET map defaults
+    /// GET map defaults
     func loadMapDefaults() {
         
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
@@ -199,12 +161,59 @@ extension MapVC {
         }
     }
     
-    // MARK:- GET map annotations FROM core data
+    /// SAVE new annotation TO core data
+    func saveAnnotation(coordinate: CLLocationCoordinate2D, completion: ((Pin) -> Void)? = nil) {
+        
+        let pin = Pin(context: dataController.viewContext)
+        pin.latitude = coordinate.latitude
+        pin.longitude = coordinate.longitude
+        
+        FlickrClient.requestImages(latitude: pin.latitude, longitude: pin.longitude) { (urls, maxPages) in
+            
+            pin.imagesURLS = urls
+            pin.maxPages = Int16(maxPages)
+            completion?(pin)
+            try? self.dataController.viewContext.save()
+        }
+    }
+    
+    /// ADD loaded annotations from core data AND new annotation TO map annotations
+    func addAnnotations(pins: [Pin]) {
+        
+        var annotations = [CustomMKPointAnnotation]()
+        
+        for pin in pins {
+            let annotation = CustomMKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            annotation.title = "title"
+            annotation.subtitle = "subtitle"
+            annotation.pin = pin
+            annotations.append(annotation)
+        }
+        
+        editButtonItem.isEnabled = !annotations.isEmpty
+        mapView.addAnnotations(annotations)
+    }
+    
+    /// SET new map defaults
+    func setMapDefaults() {
+        let latitude = mapView.centerCoordinate.latitude
+        let longitude = mapView.centerCoordinate.longitude
+        let latitudeDelta =  mapView.region.span.latitudeDelta
+        let longitudeDelta = mapView.region.span.longitudeDelta
+        
+        UserDefaults.standard.set(latitude, forKey: "x")
+        UserDefaults.standard.set(longitude, forKey: "y")
+        UserDefaults.standard.set(latitudeDelta, forKey: "z")
+        UserDefaults.standard.set(longitudeDelta, forKey: "w")
+    }
+    
+    /// GET map annotations FROM core data
     func loadAnnotations() -> [Pin] {
         
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         
-        if let pins = try? dataController2.viewContext.fetch(fetchRequest) {
+        if let pins = try? dataController.viewContext.fetch(fetchRequest) {
             return pins
         }
         
@@ -214,10 +223,10 @@ extension MapVC {
 }
 
 
-// MARK:- Map Gesture Recognizer
+// MARK:- UIGestureRecognizerDelegate
 extension MapVC: UIGestureRecognizerDelegate {
     
-    // MARK:- ADD long press gesture recognizer TO map
+    /// ADD long press gesture recognizer TO map
     func setupLongPressGesture() {
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(sender:)))
@@ -225,7 +234,7 @@ extension MapVC: UIGestureRecognizerDelegate {
         mapView.addGestureRecognizer(longPressGesture)
     }
     
-    // MARK:- SAVE AND ADD annotation TO map
+    /// SAVE AND ADD annotation TO map
     @objc func handleLongPressGesture(sender: UILongPressGestureRecognizer) {
         
         switch sender.state {
@@ -248,7 +257,7 @@ extension MapVC: UIGestureRecognizerDelegate {
         }
     }
     
-    // MARK:- ALLOW adding annotations one after the other
+    /// ALLOW adding annotations one after the other
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         true
     }

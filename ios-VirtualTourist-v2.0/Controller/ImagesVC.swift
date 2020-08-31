@@ -11,19 +11,24 @@ import MapKit
 import CoreData
 import Kingfisher
 
-class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ImagesVC: UIViewController {
+    
+    // MARK:- Attributes
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     
     //let dataController = DataController.get()
-    var dataController2: DataController!
+    var dataController: DataController!
     
     var pin: Pin!
     var datasource: [NSURL]!
     
     let spacing: CGFloat = 5.0
     var page = 1
+    
+    
+    // MARK:- Methods
     
     override func viewDidLoad() {
         
@@ -33,14 +38,14 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         setupCollectionView()
     }
     
-    // MARK:- ADD title and update images button
+    /// ADD title and update images button
     func setupNavBar() {
         
         navigationItem.title = "Photo Album"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(reloadImages))
     }
     
-    // MARK:- ADD collection view delegates and datasource
+    // ADD collection view delegates and datasource
     func setupCollectionView() {
         
         collectionView.delegate = self
@@ -48,7 +53,7 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         datasource = pin.imagesURLS
     }
     
-    // MARK:- UPDATE images
+    /// REQUEST new images
     @objc func reloadImages() {
         
         if page < pin.maxPages { page += 1 }
@@ -59,16 +64,20 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
             self.pin.imagesURLS = urls
             self.datasource = urls
             self.collectionView.reloadData()
-            try? self.dataController2.viewContext.save()
+            try? self.dataController.viewContext.save()
         }
     }
     
-    // MARK:- SET collection view number of items
+}
+
+
+//MARK:- UICollectionViewDelegate, UICollectionViewDataSource
+extension ImagesVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         datasource.count
     }
     
-    // MARK:- SET collection view cell for item
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
@@ -92,10 +101,37 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     
 }
 
+
+// MARK:- UICollectionViewDelegateFlowLayout
+extension ImagesVC: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        spacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        spacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        // gets the safeArea size
+        let viewArea = view.safeAreaLayoutGuide.layoutFrame
+        
+        let dimension: CGFloat!
+        // [(screen width) - (1 spaces in between)] / [2 image columns]
+        dimension = (viewArea.size.width - (1 * spacing)) / 2.0
+        
+        return CGSize(width: dimension, height: dimension)
+    }
+    
+}
+
+
 // MARK:- Map View
 extension ImagesVC {
     
-    // MARK:- SET map to show selected pin
+    /// SET map to show selected pin
     func setupMap() {
         
         mapView.isUserInteractionEnabled = false
@@ -109,34 +145,6 @@ extension ImagesVC {
         
         let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 20000, longitudinalMeters: 20000)
         mapView.setRegion(region, animated: true)
-    }
-    
-}
-
-// MARK:- UICollectionViewDelegateFlowLayout
-extension ImagesVC: UICollectionViewDelegateFlowLayout {
-    
-    // MARK:- SET spacing between collection items
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        spacing
-    }
-    
-    // MARK:- SET spacing between collection items
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        spacing
-    }
-    
-    // MARK:- SET item size
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        // gets the safeArea size
-        let viewArea = view.safeAreaLayoutGuide.layoutFrame
-        
-        let dimension: CGFloat!
-        // [(screen width) - (1 spaces in between)] / [2 image columns]
-        dimension = (viewArea.size.width - (1 * spacing)) / 2.0
-        
-        return CGSize(width: dimension, height: dimension)
     }
     
 }
