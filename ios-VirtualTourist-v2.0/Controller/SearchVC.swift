@@ -17,7 +17,8 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     var datasource = [NSURL]()
     let spacing: CGFloat = 5.0
     var page = 1
-    var maxPages = 5
+    var maxPages = 1
+    var searching = ""
 
     override func viewDidLoad() {
         
@@ -37,7 +38,6 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     func setupSearch() {
         
         // (delegate)
-        searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         
         // transparent background
@@ -61,13 +61,17 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
     
     @objc func reloadImages() {
         
-        if page < maxPages { page += 1 }
-        else { page = 1 }
+        if page < maxPages {
+            page += 1
+        }
+        else {
+            page = 1
+        }
         
-        FlickrClient.requestImages(page: page, search: "") { (urls, maxPages) in
+        FlickrClient.requestImages(page: page, search: searching) { (urls, maxPages) in
             
-//            self.pin.imagesURLS = urls
-//            self.datasource = urls
+            self.maxPages = maxPages
+            self.datasource = urls
             self.collectionView.reloadData()
         }
     }
@@ -107,10 +111,18 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
 }
 
 // MARK:- UISearchBarDelegate
-extension SearchVC: UISearchBarDelegate, UISearchResultsUpdating {
+extension SearchVC: UISearchBarDelegate {
     
-    func updateSearchResults(for searchController: UISearchController) {
-        collectionView.reloadData()
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard !(searchBar.text?.isEmpty ?? true) else { return }
+        
+        searching = searchBar.text ?? ""
+        
+        FlickrClient.requestImages(page: page, search: searching) { (urls, maxPages) in
+            
+            self.datasource = urls
+            self.collectionView.reloadData()
+        }
     }
     
 }
