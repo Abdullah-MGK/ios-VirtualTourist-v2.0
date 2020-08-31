@@ -14,10 +14,7 @@
         - Click on share icon to save it or share it
     3- Delete Pins:
         - Click Edit button so delete mode is activated, select pins to delete them, click done to confirm deleting, click cancel to cancel deletion, if no pins edit button will be disabled
-    4- Add Pins
-        - Long press:
-            - begin: drop, changed: move, ended: save
-    5- Search
+    4- Search
         - Enter keyword to search for something
  */
 

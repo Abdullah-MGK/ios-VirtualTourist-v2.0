@@ -55,9 +55,9 @@ struct FlickrQueryParams: Codable {
     var page = 1
     let perPage = 20
     let accuracy = 11
-    var latitude = 1.0
-    var longitude = 1.0
-    var text = ""
+    var latitude: Double?
+    var longitude: Double?
+    var text: String?
     
     enum CodingKeys: String, CodingKey {
         case method

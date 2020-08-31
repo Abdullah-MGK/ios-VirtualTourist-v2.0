@@ -114,15 +114,23 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
 extension SearchVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard !(searchBar.text?.isEmpty ?? true) else { return }
         
         searching = searchBar.text ?? ""
         
         FlickrClient.requestImages(page: page, search: searching) { (urls, maxPages) in
             
+            self.maxPages = maxPages
             self.datasource = urls
             self.collectionView.reloadData()
         }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        page = 1
+        maxPages = 1
+        searching = ""
+        datasource = []
+        collectionView.reloadData()
     }
     
 }
