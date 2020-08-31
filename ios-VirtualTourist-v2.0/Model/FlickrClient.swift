@@ -12,7 +12,7 @@ import Alamofire
 class FlickrClient {
     
     // MARK:- SEND images reuqest AND GET images URLS
-    static func requestImages(page: Int = 1, latitude: Double, longitude: Double, search: String, completion: (([NSURL], Int) -> Void)? = nil) {
+    static func requestImages(page: Int = 1, latitude: Double = 0.0, longitude: Double = 0.0, search: String = "", completion: (([NSURL], Int) -> Void)? = nil) {
         
         let baseURL = "https://api.flickr.com/services/rest"
         let queryParams = FlickrQueryParams(page: page, latitude: latitude, longitude: longitude, text: search)

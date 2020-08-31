@@ -76,7 +76,7 @@ class MapVC: UIViewController, MKMapViewDelegate {
         pin.latitude = coordinate.latitude
         pin.longitude = coordinate.longitude
         
-        FlickrClient.requestImages(latitude: pin.latitude, longitude: pin.longitude, search: "") { (urls, maxPages) in
+        FlickrClient.requestImages(latitude: pin.latitude, longitude: pin.longitude) { (urls, maxPages) in
             
             pin.imagesURLS = urls
             pin.maxPages = Int16(maxPages)

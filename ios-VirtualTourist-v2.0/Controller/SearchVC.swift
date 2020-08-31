@@ -1,35 +1,27 @@
 //
-//  ImagesVC.swift
-//  ios-VirtualTourist
+//  SearchVC.swift
+//  ios-VirtualTourist-v2.0
 //
-//  Created by Abdullah Khayat on 8/26/20.
+//  Created by Abdullah Khayat on 8/31/20.
 //  Copyright © 2020 Abdullah Khayat. All rights reserved.
 //
 
 import UIKit
-import MapKit
-import CoreData
 import Kingfisher
 
-class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    //let dataController = DataController.get()
-    var dataController2: DataController!
-    
-    var pin: Pin!
-    var datasource: [NSURL]!
-    
+    var datasource = [NSURL]()
     let spacing: CGFloat = 5.0
     var page = 1
-    
+    var maxPages = 5
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
         setupNavBar()
-        setupMap()
         setupCollectionView()
     }
     
@@ -40,37 +32,32 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(reloadImages))
     }
     
+    @objc func reloadImages() {
+        
+        if page < maxPages { page += 1 }
+        else { page = 1 }
+        
+        FlickrClient.requestImages(page: page, search: "") { (urls, maxPages) in
+            
+//            self.pin.imagesURLS = urls
+//            self.datasource = urls
+            self.collectionView.reloadData()
+        }
+    }
+    
     // MARK:- ADD collection view delegates and datasource
     func setupCollectionView() {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        datasource = pin.imagesURLS
     }
     
-    // MARK:- UPDATE images
-    @objc func reloadImages() {
-        
-        if page < pin.maxPages { page += 1 }
-        else { page = 1 }
-        
-        FlickrClient.requestImages(page: page, latitude: pin.latitude, longitude: pin.longitude) { (urls, maxPages) in
-            
-            self.pin.imagesURLS = urls
-            self.datasource = urls
-            self.collectionView.reloadData()
-            try? self.dataController2.viewContext.save()
-        }
-    }
-    
-    // MARK:- SET collection view number of items
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         datasource.count
     }
     
-    // MARK:- SET collection view cell for item
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+                
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCell
         
         let url = datasource[indexPath.row].absoluteURL
@@ -89,32 +76,12 @@ class ImagesVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         vc.placeholder = (collectionView.cellForItem(at: indexPath) as! ImageCell).imageView.image
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
 }
 
-// MARK:- Map View
-extension ImagesVC {
-    
-    // MARK:- SET map to show selected pin
-    func setupMap() {
-        
-        mapView.isUserInteractionEnabled = false
-        let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "title"
-        annotation.subtitle = "subtitle"
-        mapView.addAnnotation(annotation)
-        
-        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 20000, longitudinalMeters: 20000)
-        mapView.setRegion(region, animated: true)
-    }
-    
-}
 
 // MARK:- UICollectionViewDelegateFlowLayout
-extension ImagesVC: UICollectionViewDelegateFlowLayout {
+extension SearchVC: UICollectionViewDelegateFlowLayout {
     
     // MARK:- SET spacing between collection items
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -140,3 +107,4 @@ extension ImagesVC: UICollectionViewDelegateFlowLayout {
     }
     
 }
+
