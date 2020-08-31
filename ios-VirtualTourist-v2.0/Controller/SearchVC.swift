@@ -12,6 +12,7 @@ import Kingfisher
 class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    let searchController = UISearchController(searchResultsController: nil)
     
     var datasource = [NSURL]()
     let spacing: CGFloat = 5.0
@@ -22,14 +23,40 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
         
         super.viewDidLoad()
         setupNavBar()
+        setupSearch()
         setupCollectionView()
     }
     
     // MARK:- ADD title and update images button
     func setupNavBar() {
         
-        navigationItem.title = "Photo Album"
+        navigationItem.title = "Search"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain, target: self, action: #selector(reloadImages))
+    }
+    
+    func setupSearch() {
+        
+        // (delegate)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        
+        // transparent background
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        // navigation bar should be hidden when searching
+        searchController.hidesNavigationBarDuringPresentation = false
+        
+        // placeholder
+        searchController.searchBar.placeholder = "looking for something?"
+        
+        // takes out the search when moving between screens
+        definesPresentationContext = true
+        
+        // always show searchbar
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        // add search controller to navbar
+        navigationItem.searchController = searchController
     }
     
     @objc func reloadImages() {
@@ -79,6 +106,14 @@ class SearchVC: UIViewController, UICollectionViewDelegate, UICollectionViewData
 
 }
 
+// MARK:- UISearchBarDelegate
+extension SearchVC: UISearchBarDelegate, UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        collectionView.reloadData()
+    }
+    
+}
 
 // MARK:- UICollectionViewDelegateFlowLayout
 extension SearchVC: UICollectionViewDelegateFlowLayout {

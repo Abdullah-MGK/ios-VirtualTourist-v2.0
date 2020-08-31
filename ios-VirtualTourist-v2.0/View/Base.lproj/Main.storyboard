@@ -172,10 +172,10 @@
             </objects>
             <point key="canvasLocation" x="1100" y="141.96428571428569"/>
         </scene>
-        <!--View Controller-->
+        <!--SearchVC-->
         <scene sceneID="bco-re-jc3">
             <objects>
-                <viewController id="gtd-4G-za5" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchVC" id="gtd-4G-za5" customClass="SearchVC" customModule="ios_VirtualTourist_v2_0" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="INs-jq-JGP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -190,12 +190,23 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="vwt-bT-gYh">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="vwt-bT-gYh">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Cwl-Fr-pth">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bne-df-h45">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bne-df-h45" firstAttribute="centerX" secondItem="Cwl-Fr-pth" secondAttribute="centerX" id="Nnb-S5-IyW"/>
+                                                <constraint firstItem="bne-df-h45" firstAttribute="width" secondItem="Cwl-Fr-pth" secondAttribute="width" id="euL-Dd-d2j"/>
+                                                <constraint firstItem="bne-df-h45" firstAttribute="height" secondItem="Cwl-Fr-pth" secondAttribute="height" id="raY-PR-Jow"/>
+                                                <constraint firstItem="bne-df-h45" firstAttribute="centerY" secondItem="Cwl-Fr-pth" secondAttribute="centerY" id="xZs-TT-0QJ"/>
+                                            </constraints>
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
                                 </cells>
@@ -211,10 +222,13 @@
                         <viewLayoutGuide key="safeArea" id="cWJ-n8-q7Q"/>
                     </view>
                     <navigationItem key="navigationItem" id="QNB-CP-b0Q"/>
+                    <connections>
+                        <outlet property="collectionView" destination="B4a-sH-1ZI" id="CSS-Qc-dtC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1L7-lM-TZG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2009" y="1583"/>
+            <point key="canvasLocation" x="2008.6956521739132" y="1582.3660714285713"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="jFU-ey-zy9">
