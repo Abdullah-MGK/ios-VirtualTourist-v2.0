@@ -2,7 +2,8 @@
 
 ## Project Description
 
-Virtual Tourist is an app that allows the users to view images for certain location by dropping a pin on the map. It uses Flickr API to get images.
+Virtual Tourist is an app that allows the users to search and view images for certain location by dropping a pin on the map or using the search feature. It uses Flickr API to get images.
+_This project was part of Udacity iOS Developer Nanodegree._
 
 ## Quickstart
 
